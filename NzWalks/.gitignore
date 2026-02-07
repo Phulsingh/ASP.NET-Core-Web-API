@@ -1,0 +1,7 @@
+# Visual Studio junk (never commit this)
+.vs/
+NzWalks/.vs/
+
+# Build output
+bin/
+obj/

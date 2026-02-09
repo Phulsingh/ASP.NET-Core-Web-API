@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NzWalks.API.Data;
 using NzWalks.API.Models.Domain;
 using NzWalks.API.Models.DTO;
@@ -19,10 +20,10 @@ namespace NzWalks.API.Controllers
         //GET ALL REGIONS
         //https://localhost:44328/api/regions
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
             //Get Data from Database Domain
-            var regionsDomain = dbContext.Regions.ToList();
+            var regionsDomain = await dbContext.Regions.ToListAsync();
 
             //Map Domain to DTO
             var regionsDTO = new List<RegionDTO>();
@@ -45,11 +46,11 @@ namespace NzWalks.API.Controllers
         //https://localhost:44328/api/regions/{id}
         [HttpGet]
         [Route("{id:guid}")]
-        public IActionResult GetById([FromRoute] Guid id)
+        public async  Task<IActionResult> GetById([FromRoute] Guid id)
         {
             //var region = dbContext.Regions.Find(id);
             //GET region from Domain Model from Database
-            var regionDomain = dbContext.Regions.FirstOrDefault(x => x.Id == id);
+            var regionDomain = await dbContext.Regions.FirstOrDefaultAsync(x => x.Id == id);
             if(regionDomain == null)
             {
                 return NotFound();
@@ -69,7 +70,7 @@ namespace NzWalks.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] AddRegionRequestDTO addRegionRequestDTO)
+        public async Task<IActionResult> Create([FromBody] AddRegionRequestDTO addRegionRequestDTO)
         {
             //Map DTO to Domain Model
             var regionDomainModel = new Region
@@ -80,8 +81,8 @@ namespace NzWalks.API.Controllers
             };
 
             //Use Domain Model to create Region in Database1
-            dbContext.Regions.Add(regionDomainModel);
-            dbContext.SaveChanges();
+            await dbContext.Regions.AddAsync(regionDomainModel);
+            await dbContext.SaveChangesAsync();
 
             //Map Domain Model Back to DTO
             var regionDTO = new RegionDTO
@@ -99,10 +100,10 @@ namespace NzWalks.API.Controllers
         //https://localhost:44328/api/regions/{id}
         [HttpPut]
         [Route("{id:guid}")]
-        public IActionResult Update([FromRoute] Guid id, [FromBody] UpdateRegionRequestDTO updateRegionRequestDTO)
+        public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateRegionRequestDTO updateRegionRequestDTO)
         {
             //Check if the Region Exist 
-            var regionDomainModel = dbContext.Regions.FirstOrDefault(x => x.Id == id);
+            var regionDomainModel = await dbContext.Regions.FirstOrDefaultAsync(x => x.Id == id);
             if(regionDomainModel == null)
             {
                 return NotFound();
@@ -113,7 +114,7 @@ namespace NzWalks.API.Controllers
             regionDomainModel.RegionImageUrl = updateRegionRequestDTO.RegionImageUrl;
 
             //Update Region using Domain Model
-            dbContext.SaveChanges();
+            await  dbContext.SaveChangesAsync();
 
             //Conver Domain to DTO 
             var regionDTO = new RegionDTO
@@ -130,10 +131,10 @@ namespace NzWalks.API.Controllers
 
         [HttpDelete]
         [Route("{id:guid}")]
-        public IActionResult Delete([FromRoute] Guid id)
+        public async Task<IActionResult> Delete([FromRoute] Guid id)
         {
             //Check if the Region Exist 
-            var regionDomainModel = dbContext.Regions.FirstOrDefault(x => x.Id == id);
+            var regionDomainModel = await dbContext.Regions.FirstOrDefaultAsync(x => x.Id == id);
             if(regionDomainModel == null)
             {
                 return NotFound();
@@ -141,7 +142,7 @@ namespace NzWalks.API.Controllers
             }
 
             dbContext.Regions.Remove(regionDomainModel);
-            dbContext.SaveChanges();
+            await dbContext.SaveChangesAsync();
 
             var regionDTO = new RegionDTO
             {

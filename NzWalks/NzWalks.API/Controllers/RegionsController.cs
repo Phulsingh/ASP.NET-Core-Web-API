@@ -94,5 +94,64 @@ namespace NzWalks.API.Controllers
 
             return CreatedAtAction(nameof(GetById), new {id = regionDTO.Id }, regionDTO);
         }
+
+        //PUT Update Region
+        //https://localhost:44328/api/regions/{id}
+        [HttpPut]
+        [Route("{id:guid}")]
+        public IActionResult Update([FromRoute] Guid id, [FromBody] UpdateRegionRequestDTO updateRegionRequestDTO)
+        {
+            //Check if the Region Exist 
+            var regionDomainModel = dbContext.Regions.FirstOrDefault(x => x.Id == id);
+            if(regionDomainModel == null)
+            {
+                return NotFound();
+            }
+
+            regionDomainModel.Name = updateRegionRequestDTO.Name;
+            regionDomainModel.Code = updateRegionRequestDTO.Code;
+            regionDomainModel.RegionImageUrl = updateRegionRequestDTO.RegionImageUrl;
+
+            //Update Region using Domain Model
+            dbContext.SaveChanges();
+
+            //Conver Domain to DTO 
+            var regionDTO = new RegionDTO
+            {
+                Id = regionDomainModel.Id,
+                Name = regionDomainModel.Name,
+                Code = regionDomainModel.Code,
+                RegionImageUrl = regionDomainModel.RegionImageUrl
+            };
+
+            return Ok(regionDTO);
+
+        }
+
+        [HttpDelete]
+        [Route("{id:guid}")]
+        public IActionResult Delete([FromRoute] Guid id)
+        {
+            //Check if the Region Exist 
+            var regionDomainModel = dbContext.Regions.FirstOrDefault(x => x.Id == id);
+            if(regionDomainModel == null)
+            {
+                return NotFound();
+
+            }
+
+            dbContext.Regions.Remove(regionDomainModel);
+            dbContext.SaveChanges();
+
+            var regionDTO = new RegionDTO
+            {
+                Id = regionDomainModel.Id,
+                Name = regionDomainModel.Name,
+                Code = regionDomainModel.Code,
+                RegionImageUrl = regionDomainModel.RegionImageUrl
+            };
+
+            return Ok(regionDTO);
+        }
     }
 }

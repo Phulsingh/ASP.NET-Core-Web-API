@@ -11,5 +11,7 @@ namespace NzWalks.API.Repositories
         Task<Region> CreateAsync(Region region);
 
         Task<Region> UpdateAsync( Guid id ,Region region);
+
+        Task<Region> DeleteAsync(Guid id);
     }
 }

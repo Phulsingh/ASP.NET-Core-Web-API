@@ -44,5 +44,10 @@ namespace NzWalks.API.Repositories
             await dbContext.SaveChangesAsync();
             return existingRegion;
         }
+
+        public Task<Region> DeleteAsync(Guid id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

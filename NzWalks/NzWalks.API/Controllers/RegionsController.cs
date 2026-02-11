@@ -29,7 +29,9 @@ namespace NzWalks.API.Controllers
             //Get Data from Database Domain
             //var regionsDomain = await dbContext.Regions.ToListAsync();
 
+            //Use Repository to create Region in Database
             var regionsDomain = await regionRepository.GetAllAsync();
+
             //Map Domain to DTO
             var regionsDTO = new List<RegionDTO>();
             foreach (var regionDomain in regionsDomain)
@@ -55,8 +57,12 @@ namespace NzWalks.API.Controllers
         {
             //var region = dbContext.Regions.Find(id);
             //GET region from Domain Model from Database
-            var regionDomain = await dbContext.Regions.FirstOrDefaultAsync(x => x.Id == id);
-            if(regionDomain == null)
+            //var regionDomain = await dbContext.Regions.FirstOrDefaultAsync(x => x.Id == id);
+
+            //Use Repository to create Region in Database
+            var regionDomain = await regionRepository.GetByIdAsync(id);
+
+            if (regionDomain == null)
             {
                 return NotFound();
 
@@ -86,8 +92,11 @@ namespace NzWalks.API.Controllers
             };
 
             //Use Domain Model to create Region in Database1
-            await dbContext.Regions.AddAsync(regionDomainModel);
-            await dbContext.SaveChangesAsync();
+            //await dbContext.Regions.AddAsync(regionDomainModel);
+            //await dbContext.SaveChangesAsync();
+
+            //Use Repository to create Region in Database
+            regionDomainModel = await regionRepository.CreateAsync(regionDomainModel);
 
             //Map Domain Model Back to DTO
             var regionDTO = new RegionDTO
@@ -108,18 +117,30 @@ namespace NzWalks.API.Controllers
         public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateRegionRequestDTO updateRegionRequestDTO)
         {
             //Check if the Region Exist 
-            var regionDomainModel = await dbContext.Regions.FirstOrDefaultAsync(x => x.Id == id);
-            if(regionDomainModel == null)
+            //var regionDomainModel = await dbContext.Regions.FirstOrDefaultAsync(x => x.Id == id);
+
+            //DTO to Domain Model
+            var regionDomainModel = new Region
+            {
+                Name = updateRegionRequestDTO.Name,
+                Code = updateRegionRequestDTO.Code,
+                RegionImageUrl = updateRegionRequestDTO.RegionImageUrl
+            };
+
+            //Use Repository to create Region in Database
+            regionDomainModel = await regionRepository.UpdateAsync(id, regionDomainModel);
+
+            if (regionDomainModel == null)
             {
                 return NotFound();
             }
 
-            regionDomainModel.Name = updateRegionRequestDTO.Name;
-            regionDomainModel.Code = updateRegionRequestDTO.Code;
-            regionDomainModel.RegionImageUrl = updateRegionRequestDTO.RegionImageUrl;
+            //regionDomainModel.Name = updateRegionRequestDTO.Name;
+            //regionDomainModel.Code = updateRegionRequestDTO.Code;
+            //regionDomainModel.RegionImageUrl = updateRegionRequestDTO.RegionImageUrl;
 
             //Update Region using Domain Model
-            await  dbContext.SaveChangesAsync();
+            //await  dbContext.SaveChangesAsync();
 
             //Conver Domain to DTO 
             var regionDTO = new RegionDTO

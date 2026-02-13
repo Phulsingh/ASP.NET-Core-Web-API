@@ -160,15 +160,21 @@ namespace NzWalks.API.Controllers
         public async Task<IActionResult> Delete([FromRoute] Guid id)
         {
             //Check if the Region Exist 
-            var regionDomainModel = await dbContext.Regions.FirstOrDefaultAsync(x => x.Id == id);
-            if(regionDomainModel == null)
+            //var regionDomainModel = await dbContext.Regions.FirstOrDefaultAsync(x => x.Id == id);
+
+            //Use Repository to create Region in Database
+            var regionDomainModel = await regionRepository.DeleteAsync(id);
+
+
+            if (regionDomainModel == null)
             {
                 return NotFound();
 
             }
 
-            dbContext.Regions.Remove(regionDomainModel);
-            await dbContext.SaveChangesAsync();
+            //Delete Region using Domain Model
+            //dbContext.Regions.Remove(regionDomainModel);
+            //await dbContext.SaveChangesAsync();
 
             var regionDTO = new RegionDTO
             {

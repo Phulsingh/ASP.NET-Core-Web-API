@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NzWalks.API.Data;
 
@@ -11,9 +12,11 @@ using NzWalks.API.Data;
 namespace NzWalks.API.Migrations
 {
     [DbContext(typeof(NZWalksDbContext))]
-    partial class NZWalksDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260214155448_Seed Data ")]
+    partial class SeedData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -129,9 +132,6 @@ namespace NzWalks.API.Migrations
 
                     b.Property<Guid>("DifficultyId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("LengthInKm")
-                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()

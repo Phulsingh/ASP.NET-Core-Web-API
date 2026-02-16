@@ -9,8 +9,13 @@
 
         public string? WalkImageUrl { get; set; } = null;
 
-        public Guid DifficultyId { get; set; }
+        //public Guid DifficultyId { get; set; }
 
-        public Guid RegionId { get; set; }
+        //public Guid RegionId { get; set; }
+
+        //Navigation Property
+        public RegionDTO Region { get; set; }
+
+        public DifficultyDTO Difficulty { get; set; }
     }
 }

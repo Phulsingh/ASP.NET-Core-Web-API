@@ -7,7 +7,7 @@ using NzWalks.API.Repositories;
 
 namespace NzWalks.API.Controllers
 {
-   
+
     [Route("api/[controller]")]
     [ApiController]
 
@@ -23,6 +23,8 @@ namespace NzWalks.API.Controllers
             this.walkRepositery = walkRepositery;
         }
 
+        //Create Walks
+        //POST /api/walks
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] AddWalksRequestDTO addWalksDTO)
         {
@@ -36,6 +38,17 @@ namespace NzWalks.API.Controllers
 
             return Ok(walkDTO);
 
+        }
+
+        //Get All Walks
+        //GET /api/walks
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            var walksDomainModel = await walkRepositery.GetAllAsync();
+
+            //Map to Domain to DTO
+            return Ok(mapper.Map<List<WalksDTO>>(walksDomainModel));
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using NzWalks.API.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using NzWalks.API.Data;
 using NzWalks.API.Models.Domain;
 
 namespace NzWalks.API.Repositories
@@ -16,6 +17,11 @@ namespace NzWalks.API.Repositories
             await dbContext.Walks.AddAsync(walk);
             await dbContext.SaveChangesAsync();
             return walk;
+        }
+
+        public async Task<List<Walk>> GetAllAsync()
+        {
+            return await dbContext.Walks.ToListAsync();
         }
     }
 }

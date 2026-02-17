@@ -17,7 +17,7 @@ namespace NzWalks.API.Automapper
             //Walks
             CreateMap<AddWalksRequestDTO, Walk>().ReverseMap();
             CreateMap<Walk, WalksDTO>().ReverseMap();
-            CreateMap<UpdateWalkRequestDTO, WalksDTO>().ReverseMap();
+            CreateMap<UpdateWalkRequestDTO, Walk>().ReverseMap();
 
             //Difficulty
             CreateMap<Difficulty, DifficultyDTO>().ReverseMap();

@@ -67,7 +67,7 @@ namespace NzWalks.API.Controllers
         }
 
         [HttpPut]
-        [HttpGet("{id:guid}")]
+        [Route("{id:guid}")]
         public async Task<IActionResult> UpdateAsync([FromRoute] Guid id, UpdateWalkRequestDTO updateWalkReques)
         {
             //Map DTO to Domain Model

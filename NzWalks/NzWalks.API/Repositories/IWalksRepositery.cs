@@ -6,7 +6,10 @@ namespace NzWalks.API.Repositories
     {
         Task<Walk> CreateAsync(Walk walk);
 
-        Task<List<Walk>> GetAllAsync();
+        Task<List<Walk>> GetAllAsync(string? filterOn = null, string? filterQuery  = null,
+            string? sortBy = null, bool isAsceding = true,
+            int pageSize = 1, int pageNumber = 1000
+            );
 
         Task<Walk?> GetByIdAsync(Guid id);
 

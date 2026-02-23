@@ -45,11 +45,17 @@ namespace NzWalks.API.Controllers
         }
 
         //Get All Walks
-        //GET /api/walks
+        //GET /api/walks?filterOn=Name&FilterQuery=track&sortBy=Name&isAsceding=true
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] string? filterOn, [FromQuery] string? filterQuery,
+            [FromQuery] string? sortBy, [FromQuery] bool? isAsceding = true,
+            [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 1000
+            )
         {
-            var walksDomainModel = await walkRepositery.GetAllAsync();
+            var walksDomainModel = await walkRepositery.GetAllAsync(filterOn, filterQuery, sortBy, isAsceding ?? true,
+                pageNumber, pageSize
+                
+                );
 
             //Map to Domain to DTO
             return Ok(mapper.Map<List<WalksDTO>>(walksDomainModel));

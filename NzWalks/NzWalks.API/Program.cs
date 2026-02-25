@@ -12,10 +12,13 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<NzWalks.API.Data.NZWalksDbContext>(option =>
-   { 
+builder.Services.AddDbContext<NzWalks.API.Data.NZWalksDbContext>(option =>{ 
    option.UseSqlServer(builder.Configuration.GetConnectionString("NZWalksConnectionString"));
    });
+
+builder.Services.AddDbContext<NzWalks.API.Data.NZWalksAuthDbContext>(option =>{
+   option.UseSqlServer(builder.Configuration.GetConnectionString("NZWalksAuthConnectionString"));
+});
 
 
 builder.Services.AddScoped<IRegionRepository, SQLRegionRepository>();

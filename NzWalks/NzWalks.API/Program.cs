@@ -17,6 +17,10 @@ builder.Services.AddDbContext<NzWalks.API.Data.NZWalksDbContext>(option =>
    option.UseSqlServer(builder.Configuration.GetConnectionString("NZWalksConnectionString"));
    });
 
+builder.Services.AddDbContext<NzWalks.API.Data.NZWalksAuthDbContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("NZWalksAuthConnectionString"));
+});
 
 builder.Services.AddScoped<IRegionRepository, SQLRegionRepository>();
 builder.Services.AddScoped<IWalksRepositery, SQLWalksRepositery>();

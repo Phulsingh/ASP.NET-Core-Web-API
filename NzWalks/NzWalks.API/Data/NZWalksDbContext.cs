@@ -17,6 +17,8 @@ namespace NzWalks.API.Data
 
         public DbSet<Walk> Walks { get; set; }
 
+        public DbSet<Images> Images { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

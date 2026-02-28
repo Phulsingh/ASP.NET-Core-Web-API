@@ -31,6 +31,7 @@ namespace NzWalks.API.Controllers
         //GET ALL REGIONS
         //https://localhost:44328/api/regions
         [HttpGet]
+        [Authorize(Roles = "Reader")]
         public async Task<IActionResult> GetAll()
         {
             //Get Data from Database Domain
@@ -63,6 +64,7 @@ namespace NzWalks.API.Controllers
         //https://localhost:44328/api/regions/{id}
         [HttpGet]
         [Route("{id:guid}")]
+        [Authorize(Roles = "Reader")]
         public async  Task<IActionResult> GetById([FromRoute] Guid id)
         {
             //var region = dbContext.Regions.Find(id);
@@ -93,6 +95,7 @@ namespace NzWalks.API.Controllers
 
         [HttpPost]
         [ValidationModel]
+        [Authorize(Roles = "Writer")]
         public async Task<IActionResult> Create([FromBody] AddRegionRequestDTO addRegionRequestDTO)
         {
   
@@ -134,6 +137,7 @@ namespace NzWalks.API.Controllers
         [HttpPut]
         [Route("{id:guid}")]
         [ValidationModel]
+        [Authorize(Roles = "Writer")]
         public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateRegionRequestDTO updateRegionRequestDTO)
         {
          
@@ -184,6 +188,7 @@ namespace NzWalks.API.Controllers
 
         [HttpDelete]
         [Route("{id:guid}")]
+        [Authorize(Roles = "Writer")]
         public async Task<IActionResult> Delete([FromRoute] Guid id)
         {
             //Check if the Region Exist 

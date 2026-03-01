@@ -1,0 +1,3 @@
+2026-03-01 19:31:32.891 +05:30 [ERR] This is a test exception for logging purposes.
+System.Exception: This is a test exception for logging purposes.
+   at NzWalks.API.Controllers.RegionsController.GetAll() in C:\Users\hp\Desktop\ASP.NET web API\NzWalks\NzWalks.API\Controllers\RegionsController.cs:line 42

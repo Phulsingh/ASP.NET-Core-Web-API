@@ -21,12 +21,15 @@ namespace NzWalks.API.Controllers
         //private readonly NZWalksDbContext dbContext;
         private readonly IRegionRepository regionRepository;
         private readonly IMapper mapper;
+        private readonly ILogger<RegionsController> logger;
 
-        public RegionsController(IRegionRepository regionRepository,  IMapper mapper)
+        public RegionsController(IRegionRepository regionRepository,  IMapper mapper,
+            ILogger<RegionsController> logger)
         {
             //this.dbContext = dbContext;
             this.regionRepository = regionRepository;
             this.mapper = mapper;
+            this.logger = logger;
         }
         //GET ALL REGIONS
         //https://localhost:44328/api/regions
@@ -34,30 +37,43 @@ namespace NzWalks.API.Controllers
         [Authorize(Roles = "Reader")]
         public async Task<IActionResult> GetAll()
         {
-            //Get Data from Database Domain
-            //var regionsDomain = await dbContext.Regions.ToListAsync();
+            try
+            {
+                //throw new Exception("This is a test exception for logging purposes.");
+                //Get Data from Database Domain
+                //var regionsDomain = await dbContext.Regions.ToListAsync();
 
-            //Use Repository to create Region in Database
-            var regionsDomain = await regionRepository.GetAllAsync();
+                //Use Repository to create Region in Database
+                var regionsDomain = await regionRepository.GetAllAsync();
 
-            //Map Domain to DTO
-            //var regionsDTO = new List<RegionDTO>();
-            //foreach (var regionDomain in regionsDomain)
-            //{
-            //    regionsDTO.Add(new RegionDTO
-            //    {
-            //        Id = regionDomain.Id,
-            //        Name = regionDomain.Name,
-            //        Code = regionDomain.Code,
-            //        RegionImageUrl = regionDomain.RegionImageUrl
-            //    });
-            //}
+                logger.LogInformation("Successfully got all Regions from the Database");
+
+                //Map Domain to DTO
+                //var regionsDTO = new List<RegionDTO>();
+                //foreach (var regionDomain in regionsDomain)
+                //{
+                //    regionsDTO.Add(new RegionDTO
+                //    {
+                //        Id = regionDomain.Id,
+                //        Name = regionDomain.Name,
+                //        Code = regionDomain.Code,
+                //        RegionImageUrl = regionDomain.RegionImageUrl
+                //    });
+                //}
 
 
-            var regionsDTO = mapper.Map<List<RegionDTO>>(regionsDomain);
+                var regionsDTO = mapper.Map<List<RegionDTO>>(regionsDomain);
 
-            //Return DTO's
-            return Ok(regionsDTO);
+                //Return DTO's
+                return Ok(regionsDTO);
+
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, ex.Message);
+                return StatusCode(500, "Internal Server Error");
+            }
+            
         }
 
         //GET REGION BY ID

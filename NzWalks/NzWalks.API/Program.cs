@@ -6,10 +6,21 @@ using NzWalks.API.Automapper;
 using NzWalks.API.Repositories;
 using Microsoft.OpenApi.Models;
 using Microsoft.Extensions.FileProviders;
+using Serilog;
+using NzWalks.API.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+var loger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .WriteTo.File("Logs/NzWalks_Log.txt", rollingInterval: RollingInterval.Minute)
+    .MinimumLevel.Warning()
+    . CreateLogger();
+
+builder.Logging.ClearProviders();
+builder.Logging.AddSerilog(loger);
 
 builder.Services.AddControllers();
 builder.Services.AddHttpContextAccessor();
@@ -115,6 +126,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseMiddleware<ExceptionHandlerMiddleware>();
 
 app.UseHttpsRedirection();
 

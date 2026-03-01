@@ -5,12 +5,14 @@ using Microsoft.IdentityModel.Tokens;
 using NzWalks.API.Automapper;
 using NzWalks.API.Repositories;
 using Microsoft.OpenApi.Models;
+using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddHttpContextAccessor();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
@@ -66,6 +68,7 @@ builder.Services.AddDbContext<NzWalks.API.Data.NZWalksAuthDbContext>(options =>
 builder.Services.AddScoped<IRegionRepository, SQLRegionRepository>();
 builder.Services.AddScoped<IWalksRepositery, SQLWalksRepositery>();
 builder.Services.AddScoped<ITokenRepositery, TokenRepositery>();
+builder.Services.AddScoped<IImageRepositery, LocalImageRepositery>();
 
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
@@ -114,6 +117,12 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseStaticFiles( new StaticFilesOptions
+{
+    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot")),
+    RequestPath = "/static"
+});
 
 app.UseAuthentication();
 
